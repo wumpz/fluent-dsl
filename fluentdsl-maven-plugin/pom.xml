@@ -5,6 +5,16 @@
     <artifactId>fluentdsl-maven-plugin</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
+    <inceptionYear>2016</inceptionYear>
+    <organization>
+        <name>fluentdsl</name>
+    </organization>
+    <developers>
+        <developer>
+            <name>Tobias Warneke</name>
+            <email>t.warneke@gmx.net</email>
+        </developer>
+    </developers>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.7</maven.compiler.source>
@@ -50,6 +60,31 @@
                                 <argument>-Xlog</argument>
                                 <argument>-XdbgST</argument>
                             </arguments> -->
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>1.6</version>
+                <configuration>
+                    <verbose>false</verbose>
+                    <addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
+                    <canUpdateDescription>false</canUpdateDescription>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>first</id>
+                        <goals>
+                            <goal>update-file-header</goal>
+                        </goals>
+                        <phase>process-sources</phase>
+                        <configuration>
+                            <licenseName>lgpl_v2_1</licenseName>
+                            <roots>
+                                <root>src/main/java</root>
+                            </roots>
                         </configuration>
                     </execution>
                 </executions>

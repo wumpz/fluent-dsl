@@ -1,0 +1,9 @@
+options {
+    test=true;
+    tester=false;
+}
+
+test:
+    test2 | test5;
+
+test3:  this word;

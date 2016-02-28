@@ -1,0 +1,5 @@
+options {
+    package='org.tw.dsl1';
+}
+
+expr: number op number;

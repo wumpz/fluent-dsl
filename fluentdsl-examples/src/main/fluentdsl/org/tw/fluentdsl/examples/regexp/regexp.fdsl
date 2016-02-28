@@ -1,0 +1,7 @@
+options {
+    package='org.tw.fluentdsl.examples.regexp';
+}
+
+start: (accept(String text) | OneOrMore (String text) | Optional(String text) )+ 'Builder' #buildme;
+
+#buildme: build returns String;

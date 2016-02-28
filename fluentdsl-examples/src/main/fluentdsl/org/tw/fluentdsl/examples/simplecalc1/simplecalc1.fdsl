@@ -1,0 +1,6 @@
+options {
+    package='org.tw.fluentdsl.examples.simplecalc1';
+}
+
+#op: plus | minus;
+expr: number(int a) #op number(int b) equals returns int;

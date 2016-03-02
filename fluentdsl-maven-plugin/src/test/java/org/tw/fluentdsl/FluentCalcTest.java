@@ -310,7 +310,22 @@ public class FluentCalcTest {
             Matcher m = FluentCalc.NAME_PATTERN.matcher(item[0]);
             assertTrue(m.find());
             assertEquals(m.group(1), item[1]);
-        }
-        
+        }   
+    }
+    
+    @Test
+    public void testMultiProblem1() throws IOException, FluentDslException {
+        FluentCalc calc = new FluentCalc("select: column+ table+;");
+        new WriteInterfaces(calc);
+        assertEquals(3, calc.getIfaces().size());
+        Idef i = calc.getIfaces().get("Select1OneOrMoreOneOrMore");
+        assertEquals(1, i.getMethods().size());
+    }
+    
+    @Test
+    public void testSqlProblem1() throws IOException, FluentDslException {
+        FluentCalc calc = new FluentCalc("#builder: build returns String;\n" +
+                "select: column+ table+ (where | #builder) (orderby | #builder) #builder;");
+        new WriteInterfaces(calc);
     }
 }

@@ -61,10 +61,12 @@ class Idef {
         processed.add(this);
 
         for (Mdef mdef : methods) {
-            if (mdef.getReturnType() == null) {
-                mdef.setReturnType(idef);
-            } else if (recursive) {
-                mdef.getReturnType().addReturnTypeToAllVoidMethods(processed, idef, recursive);
+            if (mdef.getSimpleReturnType() == null) {
+                if (mdef.getReturnType() == null) {
+                    mdef.setReturnType(idef);
+                } else if (recursive) {
+                    mdef.getReturnType().addReturnTypeToAllVoidMethods(processed, idef, recursive);
+                }
             }
         }
     }

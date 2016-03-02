@@ -1,0 +1,7 @@
+options {
+    package='org.tw.fluentdsl.examples.sql';
+}
+
+#builder: build returns String;
+
+select: column+ table+ (where | #builder) (orderby | #builder) #builder;

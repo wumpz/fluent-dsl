@@ -183,6 +183,10 @@ public class FluentCalc {
 
             @Override
             public Object visitOneOrMore(FlibParser.OneOrMoreContext ctx) {
+                LOG.info("  starting OneOrMore");
+
+                Idef startIt = new Idef(stack.peek().getName());
+                stack.push(startIt);
                 ctx.expr.accept(this);
 
                 Idef idef = null;
@@ -197,7 +201,17 @@ public class FluentCalc {
                 } catch (FluentDslException ex) {
                     Logger.getLogger(FluentCalc.class.getName()).log(Level.SEVERE, null, ex);
                 }
+
+                while (stack.peek() != startIt) {
+                    stack.pop();
+                }
+                stack.pop(); //startIt removed
+                for (Mdef m : startIt.getMethods()) {
+                    stack.peek().getMethods().add(m);
+                }
+
                 stack.push(idef);
+                LOG.info("  finished OneOrMore");
                 return null;
             }
         }
@@ -210,7 +224,7 @@ public class FluentCalc {
     public static final Pattern NAME_PATTERN = Pattern.compile("^(.*?)\\d*$");
 
     private int counter = 0;
-    
+
     private String getUniqueName(String inputIdefName) {
         Matcher m = NAME_PATTERN.matcher(inputIdefName);
 
@@ -220,12 +234,13 @@ public class FluentCalc {
         } else {
             idefName = inputIdefName;
         }
-        
-        if (!ifaces.containsKey(idefName))
+
+        if (!ifaces.containsKey(idefName)) {
             return idefName;
-        
+        }
+
         counter++;
-        
+
         while (ifaces.containsKey(idefName + counter)) {
             counter++;
         }
@@ -262,10 +277,13 @@ public class FluentCalc {
 
         for (Mdef template : start.getMethods()) {
             Mdef mdef = new Mdef(template);
-            if (mdef.getReturnType() != null) {
-                mdef.setReturnType(deepCopyInterface(null, publicInterfaces, createdInterfaces, template.getReturnType(), end != null ? end : copy));
-            } else {
-                mdef.setReturnType(end != null ? end : copy);
+            mdef.setSimpleReturnType(template.getSimpleReturnType());
+            if (template.getSimpleReturnType() == null) {
+                if (mdef.getReturnType() != null) {
+                    mdef.setReturnType(deepCopyInterface(null, publicInterfaces, createdInterfaces, template.getReturnType(), end != null ? end : copy));
+                } else {
+                    mdef.setReturnType(end != null ? end : copy);
+                }
             }
             copy.getMethods().add(mdef);
         }
@@ -304,8 +322,11 @@ public class FluentCalc {
                     }
                     for (Mdef template : mm.getMethods()) {
                         Mdef m = new Mdef(template.getName());
-                        m.setReturnType(mdef.getReturnType());
-                        m.setSimpleReturnType(template.getSimpleReturnType());
+                        if (template.getSimpleReturnType() == null) {
+                            m.setReturnType(mdef.getReturnType());
+                        } else {
+                            m.setSimpleReturnType(template.getSimpleReturnType());
+                        }
                         methodsToAdd.add(m);
                     }
                 }

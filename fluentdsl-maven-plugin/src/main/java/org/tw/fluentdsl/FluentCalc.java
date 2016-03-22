@@ -36,7 +36,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.antlr.v4.runtime.tree.TerminalNode;
 
 /**
  * Computes fluent sets. This is a quick implementation of this very simple
@@ -111,7 +110,7 @@ public class FluentCalc {
                 Idef lastI = stack.peek();
 
                 //if (!stack.peek().allReturnTypesSet() || stack.peek().getMethods().isEmpty()) {
-                Idef idefAbstract = new Idef(getUniqueName(nextInterfaceName));
+                Idef idefAbstract = new Idef(nextInterfaceName);
                 stack.push(idefAbstract);
                 //}
                 ctx.first.accept(this);

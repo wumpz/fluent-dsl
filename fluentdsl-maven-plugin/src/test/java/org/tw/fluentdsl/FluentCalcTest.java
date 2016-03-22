@@ -320,7 +320,7 @@ public class FluentCalcTest {
         FluentCalc calc = new FluentCalc("select: column+ table+;");
         new WriteInterfaces(calc);
         assertEquals(3, calc.getIfaces().size());
-        Idef i = calc.getIfaces().get("select1OneOrMoreOneOrMore");
+        Idef i = calc.getIfaces().get("selectOneOrMoreOneOrMore");
         assertEquals(1, i.getMethods().size());
     }
     
@@ -329,7 +329,7 @@ public class FluentCalcTest {
         FluentCalc calc = new FluentCalc("select: column+ table+ where;");
         new WriteInterfaces(calc);
         assertEquals(3, calc.getIfaces().size());
-        Idef i = calc.getIfaces().get("select2OneOrMoreOneOrMore");
+        Idef i = calc.getIfaces().get("selectOneOrMoreOneOrMore");
         assertEquals(2, i.getMethods().size());
     }
     

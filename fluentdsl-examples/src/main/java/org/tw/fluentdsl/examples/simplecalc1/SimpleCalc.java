@@ -7,14 +7,14 @@ package org.tw.fluentdsl.examples.simplecalc1;
 public class SimpleCalc implements Expr {
 
     @Override
-    public Expr2 number(final int a) {
-        return new Expr2() {
+    public Expr1 number(final int a) {
+        return new Expr1() {
             @Override
-            public Expr4 plus() {
-                return new Expr4() {
+            public Expr2 plus() {
+                return new Expr2() {
                     @Override
-                    public Expr6 number(final int b) {
-                        return new Expr6() {
+                    public Expr3 number(final int b) {
+                        return new Expr3() {
                             @Override
                             public int equals() {
                                 return a+b;
@@ -25,11 +25,11 @@ public class SimpleCalc implements Expr {
             }
 
             @Override
-            public Expr4 minus() {
-                return new Expr4() {
+            public Expr2 minus() {
+                return new Expr2() {
                     @Override
-                    public Expr6 number(final int b) {
-                        return new Expr6() {
+                    public Expr3 number(final int b) {
+                        return new Expr3() {
                             @Override
                             public int equals() {
                                 return a-b;

@@ -142,6 +142,7 @@ public class FluentCalcTest {
     @Test
     public void testInterface() throws IOException, FluentDslException {
         FluentCalc calc = new FluentCalc("c:x|y; a:#c;");
+        new WriteInterfaces(calc);
         assertEquals(calc.getIfaces().size(), 2);
         Idef idef = calc.getIfaces().get("a");
         assertFalse(idef.isHidden());
@@ -174,6 +175,7 @@ public class FluentCalcTest {
     @Test
     public void testInterface4() throws IOException, FluentDslException {
         FluentCalc calc = new FluentCalc("expr: number op number;");
+        new WriteInterfaces(calc);
         assertEquals(calc.getIfaces().size(), 3);
         Idef idef = calc.getIfaces().get("expr");
         assertFalse(idef.isHidden());
@@ -318,8 +320,17 @@ public class FluentCalcTest {
         FluentCalc calc = new FluentCalc("select: column+ table+;");
         new WriteInterfaces(calc);
         assertEquals(3, calc.getIfaces().size());
-        Idef i = calc.getIfaces().get("Select1OneOrMoreOneOrMore");
+        Idef i = calc.getIfaces().get("select1OneOrMoreOneOrMore");
         assertEquals(1, i.getMethods().size());
+    }
+    
+    @Test
+    public void testMultiProblem2() throws IOException, FluentDslException {
+        FluentCalc calc = new FluentCalc("select: column+ table+ where;");
+        new WriteInterfaces(calc);
+        assertEquals(3, calc.getIfaces().size());
+        Idef i = calc.getIfaces().get("select2OneOrMoreOneOrMore");
+        assertEquals(2, i.getMethods().size());
     }
     
     @Test

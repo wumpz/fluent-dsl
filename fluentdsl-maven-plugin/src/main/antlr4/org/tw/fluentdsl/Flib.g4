@@ -17,11 +17,11 @@ rules: (interfaceRule | methodRule)+;
 interfaceRule locals [boolean hidden=false]: 
             ( '#' {$hidden=true;} )? ID ':' methodExpr ';';
 
-methodExpr:  '(' methodExpr ')'                             #Parenthesis
-            /* list needs an interface between. one can add a name for it */
-             | methodExpr ( CHARLITERAL? methodExpr )+      #List 
+methodExpr:  '(' expr=methodExpr ')'                             #Parenthesis
              | left=methodExpr '|' right=methodExpr         #Or
-             | expr=methodExpr '+'                          #OneOrMore
+             | expr=methodExpr '+'                          #OneOrMore    
+/* list needs an interface between. one can add a name for it */
+             | first=methodExpr ifacename=CHARLITERAL? second=methodExpr     #List     
              | singleMethod                                 #Simple
             ;
 

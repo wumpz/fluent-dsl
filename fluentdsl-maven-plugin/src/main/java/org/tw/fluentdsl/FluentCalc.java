@@ -109,6 +109,36 @@ public class FluentCalc {
                 LOG.info("  starting list");
                 String nextInterfaceName = stack.peek().getName();
                 Idef lastI = stack.peek();
+
+                //if (!stack.peek().allReturnTypesSet() || stack.peek().getMethods().isEmpty()) {
+                Idef idefAbstract = new Idef(getUniqueName(nextInterfaceName));
+                stack.push(idefAbstract);
+                //}
+                ctx.first.accept(this);
+
+                if (ctx.ifacename != null) {
+                    nextInterfaceName = ctx.ifacename.getText();
+                    nextInterfaceName = nextInterfaceName.substring(1, nextInterfaceName.length() - 1);
+                }
+
+                if (!stack.peek().allReturnTypesSet() || stack.peek().getMethods().isEmpty()) {
+                    Idef idef = new Idef(getUniqueName(nextInterfaceName));
+                    if (ifaces.containsKey(idef.getName())) {
+                        LOG.warning("duplicate interface definition");
+                    } else {
+                        ifaces.put(idef.getName(), idef);
+                    }
+
+                    try {
+                        stack.peek().addReturnTypeToAllVoidMethods(idef);
+                    } catch (FluentDslException ex) {
+                        Logger.getLogger(FluentCalc.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    stack.push(idef);
+                }
+                ctx.second.accept(this);
+
+                /*
                 for (int i = 0; i < ctx.getChildCount(); i++) {
                     if (ctx.getChild(i) instanceof TerminalNode) {
                         nextInterfaceName = ctx.getChild(i).getText();
@@ -138,18 +168,20 @@ public class FluentCalc {
                         ctx.getChild(i).accept(this);
                     }
                 }
-                Idef idefAbstract = null;
-                while (true) {
-                    idefAbstract = stack.pop();
-                    if (stack.peek().equals(lastI)) {
-                        break;
-                    } else if (stack.isEmpty()) {
-                        LOG.warning("stack broken");
-                    }
-                }
+                 */
+//                Idef idefAbstract = null;
+//                while (true) {
+//                    idefAbstract = stack.pop();
+//                    if (stack.peek().equals(lastI)) {
+//                        break;
+//                    } else if (stack.isEmpty()) {
+//                        LOG.warning("stack broken");
+//                    }
+//                }
                 LOG.info("  stopping list");
                 //merge abstract interface within current top interface
-                stack.peek().getMethods().addAll(idefAbstract.getMethods());
+                lastI.getMethods().addAll(idefAbstract.getMethods());
+                stack.remove(idefAbstract);
                 return null;
             }
 
@@ -214,6 +246,17 @@ public class FluentCalc {
                 LOG.info("  finished OneOrMore");
                 return null;
             }
+
+            @Override
+            public Object visitParenthesis(FlibParser.ParenthesisContext ctx) {
+                Idef idef = stack.peek();
+                ctx.expr.accept(this);
+                while (!stack.peek().equals(idef)) {
+                    stack.pop();
+                }
+                return null;
+            }
+
         }
         );
 

@@ -138,46 +138,6 @@ public class FluentCalc {
                 }
                 ctx.second.accept(this);
 
-                /*
-                for (int i = 0; i < ctx.getChildCount(); i++) {
-                    if (ctx.getChild(i) instanceof TerminalNode) {
-                        nextInterfaceName = ctx.getChild(i).getText();
-                        nextInterfaceName = nextInterfaceName.substring(1, nextInterfaceName.length() - 1);
-                    } else {
-                        //the only case all return types are set, are within oneormore 
-                        //expressions. here the following entry have to be added to the
-                        //last interface.
-                        if (!stack.peek().allReturnTypesSet() || stack.peek().getMethods().isEmpty()) {
-                            Idef idef = new Idef(getUniqueName(nextInterfaceName));
-
-                            if (i != 0) {
-                                if (ifaces.containsKey(idef.getName())) {
-                                    LOG.warning("duplicate interface definition");
-                                } else {
-                                    ifaces.put(idef.getName(), idef);
-                                }
-
-                                try {
-                                    stack.peek().addReturnTypeToAllVoidMethods(idef);
-                                } catch (FluentDslException ex) {
-                                    Logger.getLogger(FluentCalc.class.getName()).log(Level.SEVERE, null, ex);
-                                }
-                            }
-                            stack.push(idef);
-                        }
-                        ctx.getChild(i).accept(this);
-                    }
-                }
-                 */
-//                Idef idefAbstract = null;
-//                while (true) {
-//                    idefAbstract = stack.pop();
-//                    if (stack.peek().equals(lastI)) {
-//                        break;
-//                    } else if (stack.isEmpty()) {
-//                        LOG.warning("stack broken");
-//                    }
-//                }
                 LOG.info("  stopping list");
                 //merge abstract interface within current top interface
                 lastI.getMethods().addAll(idefAbstract.getMethods());

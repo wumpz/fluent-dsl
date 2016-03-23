@@ -56,3 +56,20 @@ testiface: mymethod(String value1, String value2) returns int;
 ## Maven Plugin usage
 
 The *fdsl* - files are provided within the *src/fluentdsl* directory and the interfaces are generated within *generated-sources*.
+The plugin itself is configured with something like this:
+
+~~~xml
+<plugin>
+    <groupId>org.tw</groupId>
+    <artifactId>fluentdsl-maven-plugin</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <executions>
+        <execution>
+            <id>default-descriptor</id>
+            <goals>
+                <goal>generate</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+~~~

@@ -18,3 +18,4 @@ select: column+ table+ (where | #builder) (orderby | #builder) #builder;
 
 The maven plugin creates a set of interfaces to provide the architecture for this dsl.
 
+## Introduction to DSL file
